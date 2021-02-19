@@ -1,6 +1,7 @@
 package academy.devdojo.springboot2.controller;
 
 import academy.devdojo.springboot2.domain.Anime;
+import academy.devdojo.springboot2.service.AnimeService;
 import academy.devdojo.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,18 +17,19 @@ import java.util.List;
 // @RequestMapping("anime") define this class as a request-handling class for path /anime
 // localhost:8080/anime
 @RestController
-@RequestMapping("anime")
+@RequestMapping("animes")
 @Log4j2
 @RequiredArgsConstructor // generates a constructor with all final fields
 public class AnimeController {
     private final DateUtil dateUtil;
+    private final AnimeService animeService;
 
     // localhost:8080/anime/list
-    @GetMapping(path = "list")
+    @GetMapping // to a new route in /animes add '(path = "pathName")'
     public List<Anime> list() {
 //        log.info print something passed in the application log
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return List.of(new Anime("Shingeki no Kyojin"), new Anime("captain tsubasa"));
+        return animeService.listAll();
     }
 }
 
