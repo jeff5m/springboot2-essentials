@@ -32,9 +32,14 @@ public class AnimeController {
     // localhost:8080/anime/list
     @GetMapping // to a new route in /animes add '(path = "pathName")'
     public ResponseEntity<Page<Anime>> list(Pageable pageable) {
-//        log.info print something passed in the application log
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeService.listAll(pageable));
+    }
+
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Anime>> listAll() {
+        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        return ResponseEntity.ok(animeService.listAllNonPageable());
     }
 
     @GetMapping(path = "/{id}")
