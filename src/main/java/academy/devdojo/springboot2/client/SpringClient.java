@@ -23,7 +23,10 @@ public class SpringClient {
 //       @formatter:off
 //        Super Type Token
         ResponseEntity<List<Anime>> exchange = new RestTemplate().exchange(
-                "http://localhost:8080/animes/all", HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
+                "http://localhost:8080/animes/all",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {});
 //       @formatter:on
         log.info(exchange.getBody());
 
@@ -37,6 +40,22 @@ public class SpringClient {
                 new HttpEntity<>(samurai, createJsonHeader()),
                 Anime.class);
         log.info("saved anime {}", samuraiSaved);
+
+        Anime animeToBeUpdated = samuraiSaved.getBody();
+        animeToBeUpdated.setName("Samurai 2");
+
+        ResponseEntity<Void> samuraiUpdated = new RestTemplate().exchange("http://localhost:8080/animes",
+                HttpMethod.PUT,
+                new HttpEntity<>(animeToBeUpdated, createJsonHeader()),
+                Void.class);
+        log.info(samuraiUpdated);
+
+        ResponseEntity<Void> samuraiDelete = new RestTemplate().exchange("http://localhost:8080/animes/{id}",
+                HttpMethod.DELETE,
+                null,
+                Void.class,
+                animeToBeUpdated.getId());
+        log.info(samuraiDelete);
     }
 
     private static HttpHeaders createJsonHeader() {
