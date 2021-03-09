@@ -14,6 +14,18 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /**
+     * Spring Security Filters examples:
+     * BasicAuthenticationFilter - base64 encode
+     * UsernamePasswordAuthenticationFilter - check if there is an username and password in the request
+     * DefaultLoginPageGeneratingFilter
+     * DefaultLogoutPageGeneratingFilter - generate login and logout pages
+     * FilterSecurityInterceptor - check if user is authorized
+     * Authentication != Authorization
+     * @param http
+     * @throws Exception
+     */
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -21,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
+                .and()
+                .formLogin()
                 .and()
                 .httpBasic();
     }
